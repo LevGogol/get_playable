@@ -1,6 +1,6 @@
 {
   "name": "Get playable",
-  "version": "1.0",
+  "version": "1.1",
   "description": "Adds a button in the bottom-right corner to copy playable ad links. Works on SensorTower and AppMagic",
   "manifest_version": 3,
   "permissions": ["webRequest", "activeTab", "activeTab", "tabs"],
