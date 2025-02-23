@@ -1,14 +1,25 @@
-chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-  if (message.action === "showLink") {
-    console.log("Received in content script:", message.data);
-    sendResponse({ status: "OK" });
-    showShareModal(message.data);
+const observer = new MutationObserver((mutationsList) => {
+  for (const mutation of mutationsList) {
+      if (mutation.type === "childList") {
+          mutation.addedNodes.forEach(node => {
+              if (node.tagName === "IFRAME" && node.src) {
+                  console.log("New iframe detected:", node.src);
+              }
+              // Проверяем, есть ли <iframe> внутри добавленного элемента
+              node.querySelectorAll?.("iframe[src]").forEach(iframe => {
+                console.log("New iframe detected:", iframe.src);
+                  showShareModal(iframe.src);
+              });
+          });
+      }
   }
 });
 
-// const playableOpened = document.getElementsByClassName("playable-ad-modal").length > 0 || document.getElementsByClassName("img-gallery-dialog-backdrop").length > 0;
+observer.observe(document.body, { childList: true, subtree: true });
 
 function showShareModal(link) {
+  console.log('debug: ' + link);
+
   const oldModal = document.getElementById("shareModal");
   if (oldModal) {
     oldModal.remove();
@@ -73,11 +84,16 @@ function showShareModal(link) {
   modal.appendChild(copyButton);
   modal.appendChild(closeButton);
 
-  document.addEventListener("click", function(event) {
-      if (!modal.contains(event.target) && event.target.id !== "shareButton") {
-          modal.remove();
-      }
-  }, { once: true });
+  setTimeout(() => {
+    document.addEventListener("click", outsideClickListener);
+  }, 0);
+
+  function outsideClickListener(event) {
+    if (!modal.contains(event.target) && event.target.id !== "shareButton") {
+      modal.remove();
+      document.removeEventListener("click", outsideClickListener);
+    }
+  }
 
   document.body.appendChild(modal);
 }
