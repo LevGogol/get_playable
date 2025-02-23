@@ -2,8 +2,8 @@ chrome.webRequest.onBeforeRequest.addListener(
   (details) => {
     chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       const activeTab = tabs[0];
-      if(activeTab.url && activeTab.url.includes("sensortower")) {
-        const isPlayableLink = (details.url.includes("https://x-ad-assets.s3.amazonaws.com/media_asset/") || details.url.includes("appmagic.rocks")) && details.url.includes("/index.html");
+      if(activeTab && activeTab.url && activeTab.url.includes("sensortower")) {
+        const isPlayableLink = (details.url.includes("https://x-ad-assets.s3.amazonaws.com/media_asset/") || details.url.includes("appmagic.rocks")) && details.url.includes(".html");
         const link = details.url;
         if (isPlayableLink) {
           chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
