@@ -3,6 +3,11 @@
   "version": "1.0",
   "description": "Adds a button in the bottom-right corner to copy playable ad links. Works on SensorTower and AppMagic",
   "manifest_version": 3,
+  "permissions": ["webRequest", "activeTab", "activeTab", "tabs"],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
   "content_scripts": [
     {
       "matches": ["*://*.sensortower.com/*", "*://*.appmagic.rocks/*"],

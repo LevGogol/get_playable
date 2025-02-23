@@ -1,30 +1,12 @@
-document.addEventListener("click", tryShowLink);
-
-async function tryShowLink() {
-  let link = await findLink();
-  const playableOpened = document.getElementsByClassName("playable-ad-modal").length > 0 || document.getElementsByClassName("img-gallery-dialog-backdrop").length > 0;
-  if(link !== null && playableOpened) {
-    showShareModal(link);
+chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
+  if (message.action === "showLink") {
+    console.log("Received in content script:", message.data);
+    sendResponse({ status: "OK" });
+    showShareModal(message.data);
   }
-}
+});
 
-let lastPromise = null;
-
-async function findLink() {
-  const currentPromise = new Promise((resolve) => {
-    setTimeout(() => {
-      if (currentPromise !== lastPromise) return; // Отмена выполнения старых вызовов
-      let entries = performance.getEntriesByType("resource");
-      let filtered = entries.filter(e => 
-        (e.name.includes("x-ad") || e.name.includes("appmagic.rocks")) && e.name.includes("index.html")
-      );
-      resolve(filtered.length > 0 ? filtered[filtered.length - 1].name : null);
-    }, 3000);
-  });
-
-  lastPromise = currentPromise;
-  return currentPromise;
-}
+// const playableOpened = document.getElementsByClassName("playable-ad-modal").length > 0 || document.getElementsByClassName("img-gallery-dialog-backdrop").length > 0;
 
 function showShareModal(link) {
   const oldModal = document.getElementById("shareModal");
