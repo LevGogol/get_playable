@@ -6,6 +6,12 @@ This Chrome extension adds a button in the bottom-right corner of the page to co
 
 ## Installation
 
+### From Chrome Web Store
+
+Get the extension from the Chrome Web Store: [Get Playable](https://chromewebstore.google.com/detail/get-playable/ihcleanhlnbbgodmgjcjoklpeckmhaop)
+
+### Manual Installation
+
 1. Download the extension files.
 2. Open Chrome and go to `chrome://extensions/`.
 3. Enable "Developer mode" (top right corner).
